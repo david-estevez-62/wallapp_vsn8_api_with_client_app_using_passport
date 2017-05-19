@@ -53,16 +53,16 @@ $("#nav span").on("click", function(){
 			// Add the listeners, including the mousemove and drag listeners on the edit div itself
 			addEditStateEvents();
 		 	$(document).on("mousedown", function(event){
-		 		if(event.which && event.which === 1){
+		 		if(event.which === 1){
 		 			leftButtonDown = true;
-		 		}else if(event.button && event.button === 0){
+		 		}else if(event.button === 0){
 		 			leftButtonDown = true;
 		 		}
 			});
 			$(document).on("mouseup", function(event){
-			    if(event.which && event.which === 1){
+			    	if(event.which === 1){
 		 			leftButtonDown = false;
-		 		}else if(event.button && event.button === 0){
+		 		}else if(event.button === 0){
 		 			leftButtonDown = false;
 		 		}
 			});
