@@ -28,6 +28,12 @@ body {
   float: right;
 }
 
+#header a:nth-child(4) {
+  float: right;
+}
+
+
+
 #backSetting {
   position: absolute;
   left: 50%;
@@ -51,10 +57,10 @@ body {
 }
 
 #backSetting img {
-  /*Add this above for when looping pictures in jade and stack imgs not combined one img*/
+  /* Needed when looping pictures to stack imgs won't need this if combined to one img */
   position: absolute;
   top: 0px;
-  /*Add this above for when looping pictures in jade and stack imgs not combined one img*/
+  /* Needed when looping pictures in stack imgs won't need this if combined to one img */
   display: block;
   width:100%;
   height:100%;
@@ -150,6 +156,10 @@ body {
   cursor: move;
 }
 
+#toolBar [type=image] {
+  width: 30px;
+}
+
 #toolBar input {
   display: block;
   margin: 10px auto;
@@ -211,3 +221,4 @@ body {
     margin: -15px auto;
   }
 }
+

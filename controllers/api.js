@@ -1,26 +1,22 @@
 
-var User = require('../models/users.js');
+var User = require("../models/users.js");
 
 
-var fs = require('fs'),
-base64Img = require('base64-img');
+var fs = require("fs"),
+base64Img = require("base64-img");
 
 
 
 
 module.exports = function(app) {
 
-	// have the base (default) route redirect to the /wall route
-	app.get("/", function(req, res) {
-	    res.redirect("/wall");
-	});
 
-
-	app.get("/wall", function(req, res) {
-
-		fs.readdir('public/img/uploads', function(err, pics){
-			var user = req.user || null;
-
+	// get static imgs and user
+	app.get("/bootstrapclient", function(req, res){
+	  	fs.readdir("public/img/uploads", function(err, pics){
+	 
+	  		var user = req.user || null;
+	  		
 			var imgs = [];
 
 			if (err) {
@@ -31,22 +27,20 @@ module.exports = function(app) {
 		    // because could have hidden .files such as DS Store
 		    for (var i = 0; i < pics.length; i++) {
 		    	if(pics[i].substr(-4) === ".png"){
-		    		imgs.push("/img/uploads/" + pics[i]);
+		    		imgs.push("http://" + req.headers.host + "/img/uploads/" + pics[i]);
 		    	}
 		    }
 
-		    res.render("index", { user: user, imgs: imgs, info: req.flash('info') });
-
+		    res.send({ user: user , imgs: imgs });
 
 		});
-
 	});
 
 
+	// get static imgs
 	app.get("/staticpics", function(req, res) {
 
-		fs.readdir('public/img/uploads', function(err, pics){
-			var user = req.user || null;
+		fs.readdir("public/img/uploads", function(err, pics){
 
 			var imgs = [];
 
@@ -58,7 +52,7 @@ module.exports = function(app) {
 		    // because could have hidden .files such as DS Store
 		    for (var i = 0; i < pics.length; i++) {
 		    	if(pics[i].substr(-4) === ".png"){
-		    		imgs.push("/img/uploads/" + pics[i]);
+		    		imgs.push("http://" + req.headers.host + "/img/uploads/" + pics[i]);
 		    	}
 		    }
 
@@ -89,21 +83,19 @@ module.exports = function(app) {
 				infoMsg = "That link is not for a valid account.";
 			}
 
-			req.flash("info", infoMsg);
-
-		  	res.redirect('/wall')
+		  	res.send(infoMsg);
 		}); 
 
 	});
 
 
 	app.post("/url/action", function(req, res) {
-		if(req.isAuthenticated()){
+		// if(req.isAuthenticated()){
 			// Convert the base64 data Url to a png file and store in /public/img/uploads/ directory
-		 	base64Img.img(req.body.dataUrl, './public/img/uploads/', String(new Date().getTime()), function(err, filepath) {
+		 	base64Img.img(req.body.dataUrl, "./public/img/uploads/", String(new Date().getTime()), function(err, filepath) {
 				res.end();
 			});
-	 	}
+	 	// }
 	});
 
 

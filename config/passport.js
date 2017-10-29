@@ -1,7 +1,8 @@
 
-var User = require('../models/users'),
-passport = require('passport'),
-LocalStrategy = require('passport-local').Strategy;
+var passport = require("passport"),
+LocalStrategy = require("passport-local").Strategy;
+
+var User = require("../models/users");
 
 
 // SERIALIZATION:
@@ -32,14 +33,14 @@ var localSignIn = new LocalStrategy({
   function(req, username, password, next){
     
     // Check to see if user is in the database
-    User.findOne({ 'email': username }, function(err, user){
+    User.findOne({ "email": username }, function(err, user){
 
 
       if (err) return next(err);
 
       // Get in here if No user found
       if (!user){
-        return next(null, false, req.flash('info', 'No user found.'));
+        return next(null, false, req.flash("info", "No user found."));
       }
 
 
@@ -50,12 +51,12 @@ var localSignIn = new LocalStrategy({
 
         // Password did not match the return user
         if(!isMatch){
-          return next(null, false, req.flash('info', 'Incorrect password.'));
+          return next(null, false, req.flash("info", "Incorrect password."));
         }
 
         // user found, password match. Check if user has confirmed email
         if(!user.confirmed){
-          return next(null, false, req.flash('info', 'Confirm the email verification.'));
+          return next(null, false, req.flash("info", "Confirm the email verification."));
         }else{
           return next(null, user);
         }
@@ -68,6 +69,6 @@ var localSignIn = new LocalStrategy({
 
 // Passport needs to know about our strategy definition above, so
 // we hook that in here.
-passport.use('localSignIn', localSignIn);
+passport.use("localSignIn", localSignIn);
 
 

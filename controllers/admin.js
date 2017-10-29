@@ -1,24 +1,25 @@
 
 
-var User = require('../models/users');
-
-var nodemailer = require('nodemailer');
+var nodemailer = require("nodemailer");
 
 var transporter = nodemailer.createTransport({
-  service: 'Aol',
+  service: "Aol",
   auth: {
-      user: 'canvastestprogram@aol.com',
-      pass: 'secret27-'
+      user: "canvastestprogram@aol.com",
+      pass: "secret27-"
   }
 });
 
 
 
-
 var mailOptions = {
-  from: 'Canvas App Support <canvastestprogram@aol.com>',
-  subject: 'Canvas App - Email verification',
+  from: "Eric <canvastestprogram@aol.com>",
+  subject: "Canvas App - Email verification"
 }
+
+
+
+var User = require("../models/users");
 
 
 
@@ -31,9 +32,7 @@ var performLogin = function (req, res, next, user) {
 
     if (err) return next(err);
 
-    // Just end the response here we are going to refresh the page on client
-    // at which point it will get the cookie that authorizes the session
-    return res.end();
+    return res.send();
   });
 };
 
@@ -50,13 +49,12 @@ module.exports = function(app, passport){
       // We are using the "local" strategy defined (and used) in the
       // config/passport.js file
 
-      var authFunction = passport.authenticate('localSignIn', function(err, user, info){
+      var authFunction = passport.authenticate("localSignIn", function(err, user, info){
 
 
         if(err) return next(err);
 
-        // Just end the response here we are going to refresh the page on client
-        // at which point it will get the cookie that authorizes the session
+
         if(!user) {
           return res.end();
         }
@@ -75,8 +73,7 @@ module.exports = function(app, passport){
 
 
   app.post("/signup", function(req, res, next){
-
-
+      console.log("in signup route");
       User.find({email: req.body.username}, function(err, user){
 
         if(err) return next(err);
@@ -84,7 +81,7 @@ module.exports = function(app, passport){
         // Any value for user.length that is not 0 (is a truthy value) and means a user 
         // came back from the database
         if(user.length) {
-            req.flash('info', "That email is already in the system.");
+            req.flash("info", "That email is already in the system.");
             return res.send();
         } else {
 
@@ -99,16 +96,16 @@ module.exports = function(app, passport){
 
 
                   if(err) {
-                    var errMsg = 'An error occured, please try again.';
+                    var errMsg = "An error occured, please try again.";
 
-                    req.flash('info', errMsg);
+                    req.flash("info", errMsg);
 
 
                     return res.end();
                   }
 
                   mailOptions.to = req.body.username;
-                  mailOptions.text = 'Verify your Canvas account by going to this link http://localhost:8888/code/'+user._id;
+                  mailOptions.text = "Verify your Canvas account by going to this link http://"+req.headers.host+"/code/"+user._id;
 
 
 
@@ -132,7 +129,7 @@ module.exports = function(app, passport){
   app.get("/signout", function(req, res){
       req.logout();
 
-      res.redirect('/wall');
+      res.end();
   });
   
 

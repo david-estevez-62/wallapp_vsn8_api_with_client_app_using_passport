@@ -1,5 +1,5 @@
-var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
+var mongoose = require("mongoose");
+var bcrypt = require("bcrypt-nodejs");
 
 
 
@@ -22,9 +22,9 @@ var userSchema = mongoose.Schema({
 
 
 
-userSchema.pre('save', function(next){
+userSchema.pre("save", function(next){
   // First, check to see if the password has been modified. If not, just move on.
-  if(!this.isModified('password')) return next();
+  if(!this.isModified("password")) return next();
 
   // Store access to "this", which represents the current user document
   var user = this;
@@ -72,5 +72,5 @@ userSchema.methods.comparePassword = function(candidatePassword, next){
 
 
 
-var User = mongoose.model('user', userSchema);
+var User = mongoose.model("user", userSchema);
 module.exports = User;
